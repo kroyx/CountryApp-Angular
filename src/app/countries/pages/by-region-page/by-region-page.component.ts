@@ -1,21 +1,15 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Country} from '../../interfaces/country';
+import {Region} from '../../interfaces/region.enum';
 import {CountriesService} from '../../services/countries.service';
 
-enum Region {
-  Africa = 'Africa',
-  Americas = 'Americas',
-  Asia = 'Asia',
-  Europe = 'Europe',
-  Oceania = 'Oceania'
-}
 
 @Component({
   selector: 'countries-by-region-page',
   templateUrl: './by-region-page.component.html',
   styles: []
 })
-export class ByRegionPageComponent {
+export class ByRegionPageComponent implements OnInit {
 
   public countries: Country[] = [];
 
@@ -32,6 +26,11 @@ export class ByRegionPageComponent {
   public selectedRegion?: Region;
 
   constructor(private countriesService: CountriesService) {}
+
+  ngOnInit(): void {
+    this.countries = this.countriesService.cacheStore.byRegion.countries;
+    this.selectedRegion = this.countriesService.cacheStore.byRegion.region;
+  }
 
   searchByRegion(region: Region): void {
     this.selectedRegion = region;
